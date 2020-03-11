@@ -30,5 +30,8 @@ build/
 ### VS Code ###
 .vscode/
 
-### PDF ###
+### OTHERS ###
 sample.signed.pdf
+libs
+results.log
+results-tmp.log

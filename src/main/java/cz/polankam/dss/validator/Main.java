@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -51,10 +52,12 @@ public class Main {
             return;
         }
 
-        validate(args[0]);
+        try (PrintWriter results = new PrintWriter("results-tmp.log", "UTF-8")) {
+            validate(args[0], results);
+        }
     }
 
-    private static Reports validate(String signedFile) throws IOException {
+    private static Reports validate(String signedFile, PrintWriter results) throws IOException {
         Logger rootLogger = (Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME);
         rootLogger.setLevel(Level.WARN);
 
@@ -84,6 +87,11 @@ public class Main {
 //        System.out.println("  Info    : " + simpleReport.getInfo(id));
 //        System.out.println("  Errors  : " + simpleReport.getErrors(id));
 //        System.out.println("  Warnings: " + simpleReport.getWarnings(id));
+
+        // write results to file
+        results.println("Indication: " + simpleReport.getIndication(id));
+        results.println("Subindication: " + simpleReport.getSubIndication(id));
+        results.println("------------------------------------------------------------");
 
         return reports;
     }
